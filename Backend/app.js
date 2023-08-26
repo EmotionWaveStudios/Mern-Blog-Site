@@ -12,14 +12,14 @@ app.use(express.json());
 
 mongoose
   .connect(process.env.MONGO_DB)
-  .then(() =>
+  .then(() => {
     app.listen(process.env.PORT, () => {
       console.log(
         "app is listening to localhost and port number",
         process.env.PORT
       );
-    })
-  )
+    });
+  })
   .catch((err) => {
     console.log(err);
   });
