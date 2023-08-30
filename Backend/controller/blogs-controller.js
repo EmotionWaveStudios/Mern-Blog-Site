@@ -1,16 +1,16 @@
-import Blog from "../model/Blog";
-import User from "../model/User";
-import mongoose from "mongoose";
+import Blog from '../model/Blog';
+import User from '../model/User';
+import mongoose from 'mongoose';
 
 export const getAllBlog = async (req, res) => {
   let blogs;
   try {
-    blogs = await Blog.find().populate("user");
+    blogs = await Blog.find().populate('user');
   } catch (err) {
     console.log(err);
   }
   if (!blogs) {
-    return res.status(404).json({ message: "Blog not found" });
+    return res.status(404).json({ message: 'Blog not found' });
   }
 
   return res.status(200).json({ blogs });
@@ -26,7 +26,7 @@ export const addBlog = async (req, res) => {
     console.log(err);
   }
   if (!existingUser) {
-    return res.status(404).json({ message: "user not found" });
+    return res.status(404).json({ message: 'user not found' });
   }
 
   const blog = new Blog({ title, description, image, user });
@@ -57,7 +57,7 @@ export const updateBlog = async (req, res) => {
     console.log(err);
   }
   if (!blog) {
-    return res.status(500).json({ message: "Unable to update" });
+    return res.status(500).json({ message: 'Unable to update' });
   }
   return res.status(200).json({ blog });
 };
@@ -71,7 +71,7 @@ export const getById = async (req, res) => {
     console.log(err);
   }
   if (!blog) {
-    return res.status(500).json({ message: "Blog not found" });
+    return res.status(500).json({ message: 'Blog not found' });
   }
   return res.status(200).json({ blog });
 };
@@ -81,28 +81,28 @@ export const deleteBlog = async (req, res) => {
 
   let blog;
   try {
-    blog = await Blog.findByIdAndRemove({ _id: blogId }).populate("user");
+    blog = await Blog.findByIdAndRemove({ _id: blogId }).populate('user');
     await blog.user.blogs.pull(blog);
     await blog.user.save();
   } catch (err) {
     console.log(err);
   }
   if (!blog) {
-    return res.status(500).json({ message: "Blog not found" });
+    return res.status(500).json({ message: 'Blog not found' });
   }
-  return res.status(200).json({ message: "Blog is deleted sucessfully" });
+  return res.status(200).json({ message: 'Blog is deleted sucessfully' });
 };
 
 export const getByUserId = async (req, res) => {
   const userId = req.params.id;
   let userBlogs;
   try {
-    userBlogs = await User.findById({ _id: userId }).populate("blogs");
+    userBlogs = await User.findById({ _id: userId }).populate('blogs');
   } catch (err) {
     console.log(err);
   }
   if (!userBlogs) {
-    return res.status(404).json({ message: "Blog not found for this user id" });
+    return res.status(404).json({ message: 'Blog not found for this user id' });
   }
   return res.status(200).json({ user: userBlogs });
 };
